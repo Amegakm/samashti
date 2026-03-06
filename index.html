@@ -1,0 +1,339 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samashti - Student Council</title>
+
+<style>
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+font-family:Segoe UI, sans-serif;
+background:#000;
+color:#f5f5f5;
+}
+
+/* NAVBAR */
+
+nav{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:center;
+gap:40px;
+padding:18px;
+background:rgba(0,0,0,0.85);
+border-bottom:1px solid #d4af37;
+z-index:1000;
+}
+
+nav a{
+text-decoration:none;
+color:#d4af37;
+font-weight:600;
+transition:0.3s;
+}
+
+nav a:hover{
+color:white;
+}
+
+/* HERO */
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+background:linear-gradient(135deg,#000,#111);
+}
+
+.hero h1{
+font-size:72px;
+letter-spacing:4px;
+color:#d4af37;
+animation:slideDown 1.5s ease;
+}
+
+.hero p{
+max-width:600px;
+opacity:0.9;
+margin-top:10px;
+}
+
+.hero button{
+margin-top:25px;
+padding:14px 35px;
+border:none;
+background:#d4af37;
+color:black;
+font-weight:bold;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.hero button:hover{
+transform:scale(1.1);
+}
+
+/* SECTIONS */
+
+section{
+padding:100px 12%;
+}
+
+h2{
+text-align:center;
+margin-bottom:40px;
+font-size:36px;
+color:#d4af37;
+}
+
+/* CARDS */
+
+.cards{
+display:flex;
+gap:25px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.card{
+background:#111;
+padding:30px;
+border-radius:12px;
+width:260px;
+text-align:center;
+border:1px solid #d4af37;
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+background:#1a1a1a;
+}
+
+/* FORM */
+
+form{
+max-width:500px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+input,select,textarea{
+padding:12px;
+border:none;
+background:#111;
+color:white;
+border:1px solid #d4af37;
+border-radius:6px;
+}
+
+.submit{
+background:#d4af37;
+color:black;
+border:none;
+padding:12px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.submit:hover{
+transform:scale(1.05);
+}
+
+/* GALLERY */
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.gallery img{
+width:100%;
+border-radius:10px;
+transition:0.4s;
+border:2px solid #d4af37;
+}
+
+.gallery img:hover{
+transform:scale(1.1);
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+background:#000;
+border-top:1px solid #d4af37;
+margin-top:40px;
+}
+
+/* ANIMATIONS */
+
+@keyframes slideDown{
+from{
+opacity:0;
+transform:translateY(-60px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#events">Events</a>
+<a href="#recruitment">Recruitment</a>
+<a href="#gallery">Gallery</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section class="hero" id="home">
+
+<h1>SAMASHTI</h1>
+
+<p>
+The official student council representing leadership,
+unity, and student initiatives across campus.
+</p>
+
+<button onclick="location.href='#recruitment'">
+Join Samashti
+</button>
+
+</section>
+
+<section id="about">
+
+<h2>About Samashti</h2>
+
+<p style="text-align:center;max-width:800px;margin:auto;">
+Samashti is the student council that represents the
+collective voice of students. We organize cultural
+events, leadership programs, student initiatives,
+and campus activities that strengthen our community.
+</p>
+
+</section>
+
+<section id="events">
+
+<h2>What We Do</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Campus Events</h3>
+<p>Organizing fests, competitions and celebrations.</p>
+</div>
+
+<div class="card">
+<h3>Leadership</h3>
+<p>Developing student leadership and teamwork skills.</p>
+</div>
+
+<div class="card">
+<h3>Workshops</h3>
+<p>Skill development sessions and student initiatives.</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="recruitment">
+
+<h2>Recruitment</h2>
+
+<form>
+
+<input type="text" placeholder="Full Name" required>
+
+<input type="email" placeholder="Email Address" required>
+
+<input type="tel" placeholder="Phone Number">
+
+<select required>
+<option>Select Department</option>
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>Mechanical</option>
+</select>
+
+<select required>
+<option>Year of Study</option>
+<option>1st Year</option>
+<option>2nd Year</option>
+<option>3rd Year</option>
+<option>4th Year</option>
+</select>
+
+<textarea rows="4" placeholder="Why do you want to join Samashti?"></textarea>
+
+<button class="submit">Apply Now</button>
+
+</form>
+
+</section>
+
+<section id="gallery">
+
+<h2>Gallery</h2>
+
+<div class="gallery">
+
+<img src="https://picsum.photos/400?1">
+<img src="https://picsum.photos/400?2">
+<img src="https://picsum.photos/400?3">
+<img src="https://picsum.photos/400?4">
+
+</div>
+
+</section>
+
+<section id="contact">
+
+<h2>Contact</h2>
+
+<p style="text-align:center">
+Email: samashti@college.edu <br>
+Instagram: @samashti <br>
+Faculty Coordinator: Prof. XYZ
+</p>
+
+</section>
+
+<footer>
+
+<p>© 2026 Samashti Student Council</p>
+
+</footer>
+
+</body>
+</html>
+```
