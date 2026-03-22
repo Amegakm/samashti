@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,235 +5,84 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Samashti - Student Council</title>
 
-<style>
-
-html{scroll-behavior:smooth;}
-
-body{
-margin:0;
-font-family:Segoe UI, sans-serif;
-background:black;
-color:white;
-}
-
-/* NAVBAR */
-
-nav{
-position:fixed;
-top:0;
-width:100%;
-display:flex;
-justify-content:center;
-gap:40px;
-padding:18px;
-background:rgba(0,0,0,0.9);
-border-bottom:1px solid gold;
-z-index:1000;
-}
-
-nav a{
-text-decoration:none;
-color:gold;
-font-weight:bold;
-transition:0.3s;
-}
-
-nav a:hover{
-color:white;
-}
-
-/* HERO */
-
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-background:linear-gradient(135deg,#000,#111);
-}
-
-.hero h1{
-font-size:70px;
-letter-spacing:4px;
-color:gold;
-animation:slideDown 1.5s ease;
-}
-
-.hero p{
-max-width:600px;
-opacity:0.9;
-margin-top:10px;
-}
-
-.hero button{
-margin-top:25px;
-padding:14px 35px;
-border:none;
-background:gold;
-color:black;
-font-weight:bold;
-border-radius:30px;
-cursor:pointer;
-transition:0.3s;
-}
-
-.hero button:hover{
-transform:scale(1.1);
-}
-
-/* SECTION */
-
-section{
-padding:100px 12%;
-}
-
-h2{
-text-align:center;
-margin-bottom:40px;
-font-size:36px;
-color:gold;
-}
-
-/* CARDS */
-
-.cards{
-display:flex;
-gap:25px;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.card{
-background:#111;
-padding:30px;
-border-radius:12px;
-width:260px;
-text-align:center;
-border:1px solid gold;
-transition:0.4s;
-}
-
-.card:hover{
-transform:translateY(-10px);
-}
-
-/* FORM */
-
-form{
-max-width:500px;
-margin:auto;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-input,select,textarea{
-padding:12px;
-border:none;
-background:#111;
-color:white;
-border:1px solid gold;
-border-radius:6px;
-}
-
-.submit{
-background:gold;
-color:black;
-border:none;
-padding:12px;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* GALLERY */
-
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.gallery img{
-width:100%;
-height:230px;
-object-fit:cover;
-border-radius:10px;
-border:2px solid gold;
-transition:0.4s;
-}
-
-.gallery img:hover{
-transform:scale(1.08);
-}
-
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:30px;
-background:black;
-border-top:1px solid gold;
-margin-top:40px;
-}
-
-/* ANIMATION */
-
-@keyframes slideDown{
-from{
-opacity:0;
-transform:translateY(-60px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <nav>
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#events">Events</a>
-<a href="#recruitment">Recruitment</a>
-<a href="#gallery">Gallery</a>
-<a href="#contact">Contact</a>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="halloffame.html">Hall of Fame</a>
+<a href="recruitment.html">Recruitment</a>
+<a href="fest.html">Fest</a>
+<a href="live.html">Live</a>
+<a href="juyf.html">JUYF</a>
 </nav>
 
-<section class="hero" id="home">
+<!-- HERO -->
+<section class="hero">
 
 <h1>SAMASHTI</h1>
 
 <p>
-The official student council representing leadership,
-culture, sports and student engagement on campus.
+The official student council driving culture, leadership,
+sports and student engagement across campus.
 </p>
 
-<button onclick="location.href='#recruitment'">
+<button onclick="goToPage('recruitment.html')">
 Join Samashti
 </button>
 
 </section>
 
-<section id="about">
+<!-- FEATURES -->
+<section>
+
+<h2>Explore</h2>
+
+<div class="features">
+
+<div class="feature-card" onclick="goToPage('halloffame.html')">
+<h3>Hall of Fame</h3>
+<p>Recognizing top student achievements</p>
+</div>
+
+<div class="feature-card" onclick="goToPage('fest.html')">
+<h3>Fest 2026</h3>
+<p>Schedule, events & brochure</p>
+</div>
+
+<div class="feature-card" onclick="goToPage('live.html')">
+<h3>Live Updates</h3>
+<p>Real-time announcements</p>
+</div>
+
+<div class="feature-card" onclick="goToPage('juyf.html')">
+<h3>Register & Pay</h3>
+<p>Quick and secure registration</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+<section>
 
 <h2>About Samashti</h2>
 
-<p style="text-align:center;max-width:800px;margin:auto;">
-Samashti is the student council that represents the
-collective voice of students. The council organizes
-cultural programs, sports activities, leadership events
-and college festivals to create a vibrant campus life.
+<p class="about-text">
+Samashti represents the collective voice of students,
+organizing cultural events, sports competitions and
+leadership initiatives to build a vibrant campus life.
 </p>
 
 </section>
 
-<section id="events">
+<!-- EVENTS -->
+<section>
 
 <h2>What We Do</h2>
 
@@ -242,81 +90,28 @@ and college festivals to create a vibrant campus life.
 
 <div class="card">
 <h3>Fashion Shows</h3>
-<p>Runway events showcasing creativity and style.</p>
+<p>Runway events showcasing creativity.</p>
 </div>
 
 <div class="card">
 <h3>Cultural Programs</h3>
-<p>Dance performances like Bharatanatyam and stage events.</p>
+<p>Dance, music and stage performances.</p>
 </div>
 
 <div class="card">
 <h3>Sports</h3>
-<p>Competitions and tournaments for students.</p>
+<p>Competitive tournaments and events.</p>
 </div>
 
 </div>
-
-</section>
-
-<section id="recruitment">
-
-<h2>Recruitment</h2>
-
-<form>
-
-<input type="text" placeholder="Full Name" required>
-
-<input type="email" placeholder="Email Address" required>
-
-<input type="tel" placeholder="Phone Number">
-
-<select required>
-<option>Select Department</option>
-<option>CSE</option>
-<option>IT</option>
-<option>ECE</option>
-<option>Mechanical</option>
-</select>
-
-<select required>
-<option>Year of Study</option>
-<option>1st Year</option>
-<option>2nd Year</option>
-<option>3rd Year</option>
-<option>4th Year</option>
-</select>
-
-<textarea rows="4" placeholder="Why do you want to join Samashti?"></textarea>
-
-<button class="submit">Apply Now</button>
-
-</form>
-
-</section>
-
-<section id="gallery"> <h2>Gallery</h2> <div class="gallery"> <img src="fashion-show.png" alt="Fashion Show"> <img src="images/bharathanatyam.jpeg" alt="Bharatanatyam"> <img src="images/sports.jpeg" alt="Sports Event"> <img src="images/dance.jpeg" alt="Dance Performance"> </div> </section>
-
-<section id="contact">
-
-<h2>Contact</h2>
-
-<p style="text-align:center">
-Email: samashti@college.edu <br>
-Instagram: @samashti <br>
-Faculty Coordinator: Prof. XYZ
-</p>
 
 </section>
 
 <footer>
-
 <p>© 2026 Samashti Student Council</p>
-
 </footer>
+
+<script src="js/script.js"></script>
 
 </body>
 </html>
-
-
-
