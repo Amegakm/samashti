@@ -1,212 +1,208 @@
-/* GLOBAL RESET */
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
+/* 1. VARIABLES - Change colors here to update the whole site */
+:root {
+  --gold: #d4af37;
+  --gold-glow: rgba(212, 175, 55, 0.3);
+  --bg-dark: #0a0a0a;
+  --card-bg: #161616;
+  --nav-bg: rgba(0, 0, 0, 0.9);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-html{
-scroll-behavior:smooth;
+/* 2. GLOBAL RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-font-family:Segoe UI, sans-serif;
-background:#0a0a0a;
-color:white;
-padding-top:70px; /* prevents navbar overlap */
+html {
+  scroll-behavior: smooth;
 }
 
-/* NAVBAR */
-
-nav{
-position:fixed;
-top:0;
-width:100%;
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:20px;
-padding:14px;
-background:rgba(0,0,0,0.95);
-border-bottom:1px solid gold;
-z-index:1000;
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-dark);
+  color: white;
+  line-height: 1.6;
+  overflow-x: hidden; /* Prevents unwanted horizontal scrolling */
 }
 
-nav a{
-text-decoration:none;
-color:gold;
-font-weight:600;
-transition:0.3s;
-white-space:nowrap;
+/* 3. NAVBAR (Glassmorphism Effect) */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 4vw, 30px);
+  padding: 20px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(10px); /* Blurs content behind the nav */
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--gold);
+  z-index: 1000;
 }
 
-nav a:hover{
-color:white;
+nav a {
+  text-decoration: none;
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: var(--transition);
+  text-transform: uppercase;
 }
 
-/* HERO */
-
-.hero{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:100px 20px;
-background:linear-gradient(135deg,#000,#111);
+nav a:hover {
+  color: white;
+  text-shadow: 0 0 8px var(--gold-glow);
 }
 
-.hero h1{
-font-size:70px;
-letter-spacing:5px;
-color:gold;
+/* 4. HERO SECTION */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
 }
 
-.hero p{
-max-width:600px;
-opacity:0.85;
-margin-top:15px;
-line-height:1.6;
+.hero h1 {
+  font-size: clamp(2.5rem, 10vw, 5rem); /* Responsive font size */
+  letter-spacing: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px var(--gold-glow);
 }
 
-.hero button{
-margin-top:25px;
-padding:14px 35px;
-border:none;
-background:gold;
-color:black;
-font-weight:bold;
-border-radius:30px;
-cursor:pointer;
-transition:0.3s;
+.hero p {
+  max-width: 650px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  opacity: 0.8;
+  margin-bottom: 30px;
 }
 
-.hero button:hover{
-transform:scale(1.08);
+.hero button {
+  padding: 16px 40px;
+  border: none;
+  background: var(--gold);
+  color: black;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px var(--gold-glow);
 }
 
-/* SECTION */
-
-section{
-padding:80px 20px;
-max-width:1200px;
-margin:auto;
+.hero button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 25px var(--gold-glow);
+  background: #f1c40f;
 }
 
-h2{
-text-align:center;
-margin-bottom:40px;
-font-size:36px;
-color:gold;
+/* 5. SECTIONS & TITLES */
+section {
+  padding: 100px 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* FEATURES */
-
-.features{
-display:flex;
-flex-wrap:wrap;
-gap:25px;
-justify-content:center;
+h2 {
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
 }
 
-.feature-card{
-background:#111;
-padding:30px;
-border-radius:14px;
-flex:1 1 250px;
-max-width:300px;
-text-align:center;
-border:1px solid gold;
-cursor:pointer;
-transition:0.35s;
+/* 6. GRID SYSTEM (Replaces Flex for Features/Cards) */
+.features, .cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 
-.feature-card:hover{
-transform:translateY(-10px) scale(1.03);
+.feature-card, .card {
+  background: var(--card-bg);
+  padding: 40px 30px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  transition: var(--transition);
+  cursor: pointer;
 }
 
-/* ABOUT */
-
-.about-text{
-max-width:800px;
-margin:auto;
-text-align:center;
-line-height:1.7;
-opacity:0.9;
+.feature-card:hover, .card:hover {
+  transform: translateY(-12px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--gold-glow);
 }
 
-/* EVENTS */
-
-.cards{
-display:flex;
-gap:25px;
-flex-wrap:wrap;
-justify-content:center;
+/* 7. ABOUT SECTION */
+.about-text {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  opacity: 0.85;
 }
 
-.card{
-background:#111;
-padding:25px;
-border-radius:12px;
-flex:1 1 250px;
-max-width:300px;
-text-align:center;
-border:1px solid gold;
-transition:0.3s;
+/* 8. TABLE (Fest Schedule) */
+.table-container {
+  overflow-x: auto; /* Makes table scrollable on mobile */
+  border-radius: 12px;
+  border: 1px solid var(--gold);
+  margin-top: 20px;
 }
 
-.card:hover{
-transform:translateY(-8px);
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
 }
 
-/* TABLE (FEST PAGE) */
-
-table{
-width:100%;
-display:block;
-overflow-x:auto;
-border-collapse:collapse;
+th, td {
+  padding: 15px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  text-align: center;
 }
 
-th, td{
-padding:10px;
-border:1px solid gold;
-text-align:center;
+th {
+  background: var(--gold);
+  color: black;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:25px;
-background:black;
-border-top:1px solid gold;
+/* 9. FOOTER */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  background: #000;
+  border-top: 1px solid var(--gold);
+  font-size: 14px;
+  color: #888;
 }
 
-/* MOBILE */
+/* 10. MOBILE ADJUSTMENTS */
+@media (max-width: 768px) {
+  nav {
+    padding: 15px;
+    gap: 12px;
+  }
+  
+  nav a {
+    font-size: 11px;
+  }
 
-@media(max-width:768px){
-
-nav{
-gap:10px;
-padding:10px;
-}
-
-nav a{
-font-size:12px;
-}
-
-.hero h1{
-font-size:40px;
-}
-
-.hero p{
-font-size:14px;
-}
-
-section{
-padding:60px 15px;
-}
-
+  section {
+    padding: 60px 20px;
+  }
 }
