@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// ── Firebase Storage Rules ───────────────────────────────────────────────────
+// Go to: Firebase Console → Storage → Rules → paste this and click Publish
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // hall_of_fame folder: only authenticated users can upload
+    match /hall_of_fame/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 10 * 1024 * 1024   // max 10MB
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // gallery folder: only authenticated users can upload
+    match /gallery/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // uploads fallback folder
+    match /uploads/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // brochures folder for Fest events (PDFs and other files)
+    match /brochures/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 20 * 1024 * 1024;
+    }
+  }
+}

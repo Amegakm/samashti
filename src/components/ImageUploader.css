@@ -1,0 +1,159 @@
+.image-uploader {
+  width: 100%;
+}
+
+/* ── Drop Zone ──────────────────────────────────────────────────────────── */
+.uploader-drop-zone {
+  border: 2px dashed rgba(255, 215, 0, 0.35);
+  border-radius: 16px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 215, 0, 0.03);
+  text-align: center;
+}
+
+.uploader-drop-zone:hover,
+.uploader-drop-zone.dragging {
+  border-color: var(--accent);
+  background: rgba(255, 215, 0, 0.08);
+  transform: scale(1.01);
+}
+
+.uploader-icon {
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+.uploader-drop-zone.dragging .uploader-icon {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.uploader-label {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.uploader-label strong {
+  color: #fff;
+}
+
+.uploader-hint {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
+/* ── Preview ─────────────────────────────────────────────────────────────── */
+.uploader-preview {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.uploader-preview img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.uploader-clear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.uploader-clear:hover {
+  background: rgba(255, 70, 70, 0.8);
+}
+
+/* ── Upload Progress ─────────────────────────────────────────────────────── */
+.uploader-progress-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.uploader-progress-bar {
+  height: 4px;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.uploader-progress-overlay span {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-align: right;
+}
+
+.uploading-label {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--accent);
+  padding: 6px;
+  background: rgba(0,0,0,0.5);
+}
+
+/* ── Error ───────────────────────────────────────────────────────────────── */
+.uploader-error {
+  color: #ff6b6b;
+  font-size: 0.82rem;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(255,70,70,0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255,70,70,0.3);
+}
+
+/* ── File Uploader Additions ────────────────────────────────────────────────── */
+.file-preview-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  min-height: 160px;
+}
+
+.file-icon-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-name-display {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 600;
+  max-width: 90%;
+  text-align: center;
+  word-break: break-all;
+}

@@ -1,0 +1,677 @@
+/* ── Toast notification ──────────────────────────────────────────────── */
+.admin-toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.admin-toast.success {
+  background: rgba(68, 200, 120, 0.2);
+  border: 1px solid rgba(68, 200, 120, 0.5);
+  color: #44c878;
+}
+
+.admin-toast.error {
+  background: rgba(255, 70, 70, 0.2);
+  border: 1px solid rgba(255, 70, 70, 0.5);
+  color: #ff6b6b;
+}
+
+/* ── URL image preview in gallery form ─────────────────────────────────── */
+.url-preview {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Empty list state ──────────────────────────────────────────────────── */
+.list-empty {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  padding: 12px 0;
+}
+
+/* ── Delete icon button ─────────────────────────────────────────────────── */
+.delete-icon {
+  color: #ff4444;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+
+.delete-icon:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* ── Full width section (Recruitment, Fest) ─────────────────────────────── */
+.full-width-section {
+  grid-template-columns: 1fr !important;
+}
+
+/* ── Upload label above ImageUploader ───────────────────────────────────── */
+.upload-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.dashboard-layout {
+
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.admin-sidebar {
+  padding: 24px;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  color: var(--text-dim);
+  font-weight: 600;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFF;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.manager-section {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 30px;
+}
+
+.admin-form {
+  padding: 30px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 100px;
+}
+
+.admin-form h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+/* ── Styled select dropdowns ─────────────────────────────────────────────── */
+.admin-form select {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: border-color 0.2s;
+}
+
+.admin-form select:focus {
+  border-color: var(--accent);
+}
+
+.admin-form select option {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-list-item {
+  padding: 16px 20px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-list-item span {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.admin-list-item button {
+  color: #ff4444;
+  opacity: 0.6;
+  transition: var(--transition);
+}
+
+.admin-list-item button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Recruitment App Cards */
+.app-card {
+  padding: 24px;
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.app-header strong {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.app-card p {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.app-reason {
+  margin-top: 16px;
+  font-style: italic;
+  color: var(--text-dim);
+  border-left: 2px solid var(--accent);
+  padding-left: 16px;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.password-toggle:hover {
+  color: var(--accent);
+}
+
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.forgot-btn:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.success-msg {
+  color: #44ff44;
+  background: rgba(68, 255, 68, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* List Thumbnail (HOF image preview) */
+.list-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+}
+
+/* Multi-line list info (Announcements) */
+.list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.list-info strong {
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.list-sub {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Cluster Edit Cards (Fest Manager) */
+.cluster-edit-card {
+  padding: 24px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.cluster-view {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.cluster-view-info {
+  flex: 1;
+}
+
+.cluster-view-info strong {
+  font-size: 1.1rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cluster-view-info span {
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.cluster-view-info p {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.cluster-view-info small {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cluster-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cluster-edit-form h4 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.cluster-edit-form input,
+.cluster-edit-form textarea {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.cluster-edit-form input:focus,
+.cluster-edit-form textarea:focus {
+  border-color: var(--accent);
+}
+
+.json-label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.json-editor {
+  font-family: 'Courier New', monospace !important;
+  font-size: 0.82rem !important;
+  background: rgba(0,0,0,0.3) !important;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-btn {
+  padding: 8px 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.cancel-btn {
+  padding: 10px 24px;
+  border-radius: 14px;
+  background: rgba(255,68,68,0.1);
+  color: #ff6b6b;
+  font-weight: 600;
+  border: 1px solid rgba(255,68,68,0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  background: rgba(255,68,68,0.25);
+}
+
+.delete-btn {
+  color: #ff4444;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .manager-section {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 12px;
+  }
+  
+  .tab-btn {
+    white-space: nowrap;
+  }
+}
+
+/* ── Fest Events Manager ─────────────────────────────────────────────────── */
+.fest-events-manager-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.fest-info-card {
+  padding: 24px;
+  border-radius: 20px;
+}
+
+.fest-info-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.fest-info-header h3 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.fest-info-hint {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+.fest-info-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.fest-info-fields .form-group {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fest-info-fields label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fest-info-fields input {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.fest-info-fields input:focus {
+  border-color: var(--accent);
+}
+
+.fest-info-save-btn {
+  height: 44px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fest-events-manager {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.fest-event-form {
+  position: sticky;
+  top: 100px;
+}
+
+.fest-event-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fest-event-form .form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.events-admin-table-wrapper {
+  padding: 28px;
+  border-radius: 24px;
+}
+
+.events-table-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.events-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-admin-table thead {
+  border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+}
+
+.events-admin-table thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+}
+
+.events-admin-table thead th:first-child {
+  width: 36px;
+  text-align: center;
+}
+
+.events-admin-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s;
+}
+
+.events-admin-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.events-admin-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.events-admin-table td {
+  padding: 14px;
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+
+.eadmin-num {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.eadmin-name {
+  font-weight: 700;
+  color: #fff;
+}
+
+.eadmin-date {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.brochure-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.brochure-admin-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+@media (max-width: 900px) {
+  .fest-events-manager {
+    grid-template-columns: 1fr;
+  }
+
+  .fest-event-form {
+    position: static;
+  }
+}
+

@@ -1,0 +1,337 @@
+.fest-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.fest-header h1 {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--accent), #FFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fest-dates {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+.fest-header p {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+/* Events Table */
+.fest-events-section {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 1rem;
+  padding: 40px 0;
+}
+
+.events-table-wrapper {
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.events-table thead {
+  background: rgba(255, 215, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.events-table thead th {
+  padding: 18px 24px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+}
+
+.events-table thead th:first-child {
+  width: 48px;
+  text-align: center;
+}
+
+.events-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s;
+}
+
+.events-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.events-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.events-table td {
+  padding: 18px 24px;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.ev-num {
+  text-align: center;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.ev-name {
+  font-weight: 700;
+  color: #fff;
+}
+
+.ev-date {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.brochure-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255, 215, 0, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.brochure-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+}
+
+.no-brochure {
+  color: var(--text-dim);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .fest-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .events-table thead th,
+  .events-table td {
+    padding: 14px 16px;
+  }
+}
+
+
+.cluster-card {
+  padding: 0;
+  border-radius: 24px;
+  transition: var(--transition);
+  overflow: hidden;
+  height: fit-content;
+}
+
+.cluster-main {
+  display: flex;
+  gap: 24px;
+  padding: 32px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.cluster-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+.cluster-card.expanded {
+  border-color: var(--accent);
+}
+
+.cluster-toggle {
+  color: var(--accent);
+  margin-left: auto;
+}
+
+.cluster-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.cluster-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.cluster-tag {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-alt);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.cluster-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.programs-list {
+  padding: 0 32px 32px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+
+.programs-list h4 {
+  margin: 24px 0 16px;
+  font-size: 1.1rem;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.programs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.program-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.program-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.program-name {
+  font-weight: 700;
+  color: #FFF;
+}
+
+.program-type {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.program-action {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.program-fee {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.reg-btn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: var(--transition);
+}
+
+.reg-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+/* Schedule Table */
+.schedule-table {
+  max-width: 900px;
+  margin: 40px auto;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  border-bottom: 1px solid var(--border);
+  padding: 30px;
+}
+
+.schedule-row:last-child {
+  border-bottom: none;
+}
+
+.schedule-day {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule-day strong {
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.schedule-day span {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.schedule-events {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .fest-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .cluster-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .cluster-icon {
+    margin: 0 auto;
+  }
+  
+  .schedule-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
