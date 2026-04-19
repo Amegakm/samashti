@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ParticleBackground from './components/ParticleBackground';
 import Home from './pages/Home';
 import About from './pages/About';
 import HallOfFame from './pages/HallOfFame';
@@ -16,24 +17,27 @@ import Terms from './pages/Terms';
 function App() {
   return (
     <Router>
-      <div className="app-shell">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/halloffame" element={<HallOfFame />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/recruitment" element={<Recruitment />} />
-            <Route path="/live" element={<LiveUpdates />} />
-            <Route path="/fest" element={<Fest />} />
-            <Route path="/juyf" element={<JUYF />} />
-            <Route path="/admin/*" element={<Admin />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-          </Routes>
-        </main>
-        <Footer />
+      <div className="app-shell" style={{ position: 'relative' }}>
+        <ParticleBackground />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <Navbar />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/halloffame" element={<HallOfFame />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/recruitment" element={<Recruitment />} />
+              <Route path="/live" element={<LiveUpdates />} />
+              <Route path="/fest" element={<Fest />} />
+              <Route path="/juyf" element={<JUYF />} />
+              <Route path="/admin/*" element={<Admin />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </div>
     </Router>
   );
