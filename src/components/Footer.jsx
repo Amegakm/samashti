@@ -13,9 +13,8 @@ const Footer = () => {
           <h2>SAMASHTI</h2>
           <p>Inspiring students, defining culture, and building the leaders of tomorrow.</p>
           <div className="social-links">
-            <a href="#">IG</a>
-            <a href="#">TW</a>
-            <a href="#"><Mail size={20} /></a>
+            <a href="https://www.instagram.com/samashtiofficial" target="_blank" rel="noopener noreferrer">IG</a>
+            <a href="mailto:samashtiofficial@gmail.com"><Mail size={20} /></a>
           </div>
         </div>
 

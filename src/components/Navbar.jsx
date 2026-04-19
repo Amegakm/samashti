@@ -46,7 +46,7 @@ const Navbar = () => {
     { name: 'Live', path: '/live' },
   ];
 
-  const logoUrl = "https://samashtievents.com/images/samashti-logo.png";
+  const logoUrl = "https://i.ibb.co/BVynkP6y/New-Project-20-3-D39-AA5.png";
 
   return (
     <>
