@@ -40,34 +40,40 @@ export const uploadImage = (file, onProgress) => {
   });
 };
 
-// ── File Upload (Catbox.moe - Free Hosting for PDFs/Docs) ───────────────────
-export const uploadFileToStorage = (file, onProgress) => {
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from './config';
+
+// ── File Upload (Firebase Storage for PDFs/Docs) ───────────────────
+export const uploadFileToStorage = (file, folder = 'uploads', onProgress) => {
   return new Promise((resolve, reject) => {
-    const formData = new FormData();
-    formData.append('reqtype', 'fileupload');
-    formData.append('fileToUpload', file);
+    if (!file) {
+      reject(new Error('No file provided'));
+      return;
+    }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://catbox.moe/user/api.php');
+    const uniqueName = Date.now() + '_' + file.name;
+    const storageRef = ref(storage, `${folder}/${uniqueName}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    // Track upload progress
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable && onProgress) {
-        const pct = Math.round((event.loaded / event.total) * 100);
-        onProgress(pct);
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        if (onProgress) {
+          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          onProgress(pct);
+        }
+      },
+      (error) => {
+        reject(new Error('Firebase Upload Failed: ' + error.message));
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        } catch (err) {
+          reject(new Error('Failed to get URL: ' + err.message));
+        }
       }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status === 200) {
-        resolve(xhr.responseText); // Catbox returns the direct URL as text
-      } else {
-        reject(new Error('Catbox Upload Failed: ' + xhr.statusText));
-      }
-    };
-
-    xhr.onerror = () => reject(new Error('Network Error during upload'));
-    xhr.send(formData);
+    );
   });
 };
 

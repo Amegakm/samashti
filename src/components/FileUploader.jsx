@@ -10,7 +10,7 @@ import './ImageUploader.css'; // Reusing the same CSS for consistent look
  *   folder           — storage folder name (e.g. 'brochures')
  *   accept           — file types to accept (e.g. 'application/pdf')
  */
-const FileUploader = ({ onUploaded, folder = 'uploads', accept = '*' }) => {
+const FileUploader = ({ onUploaded, folder = 'uploads', accept = '*', hint = "PDFs and Documents — max 20MB" }) => {
   const [dragging, setDragging] = useState(false);
   const [fileName, setFileName] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -100,7 +100,7 @@ const FileUploader = ({ onUploaded, folder = 'uploads', accept = '*' }) => {
             <strong>Drag & drop</strong> a file here<br />
             <span>or click to browse from your device</span>
           </p>
-          <p className="uploader-hint">PDFs and Documents — max 20MB</p>
+          <p className="uploader-hint">{hint}</p>
         </div>
       )}
       {error && <p className="uploader-error">{error}</p>}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Image as ImageIcon, Bell, FileText, LogOut, Trash2, CheckCircle, Eye, EyeOff, PartyPopper, AlertCircle, ExternalLink } from 'lucide-react';
 import {
@@ -365,9 +365,11 @@ const FestEventsManager = () => {
             />
           </div>
           <div className="form-group">
-            <label className="upload-label">Brochure Image (JPG/PNG)</label>
-            <ImageUploader
+            <label className="upload-label">Brochure (Image/PDF)</label>
+            <FileUploader
               folder="brochures"
+              accept="image/*,application/pdf"
+              hint="JPG, PNG, WEBP, PDF — max 20MB"
               onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })}
             />
           </div>
@@ -511,8 +513,13 @@ const JUYFEventsManager = () => {
           <input type="text" placeholder="Date/Time" value={newEvent.date} onChange={e => setNewEvent({ ...newEvent, date: e.target.value })} required />
           <textarea placeholder="Brief Description" value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} />
           <input type="url" placeholder="Registration Link (optional)" value={newEvent.regLink} onChange={e => setNewEvent({ ...newEvent, regLink: e.target.value })} />
-          <label className="upload-label">Rules Brochure (Image)</label>
-          <ImageUploader folder="juyf_brochures" onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })} />
+          <label className="upload-label">Rules Brochure (Image/PDF)</label>
+          <FileUploader 
+            folder="brochures" 
+            accept="image/*,application/pdf" 
+            hint="JPG, PNG, WEBP, PDF — max 20MB"
+            onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })} 
+          />
           <button type="submit" className="primary-btn" disabled={saving}>
             {saving ? 'Adding...' : 'Add JUYF Event'}
           </button>
@@ -666,10 +673,18 @@ const AdminLogin = () => {
     e.preventDefault();
     setError(''); setMessage('');
     try {
+      // Auto-create amegakm13@gmail.com to help setup the first admin.
+      if (email === 'amegakm13@gmail.com') {
+        try {
+          await createUserWithEmailAndPassword(auth, email, password);
+        } catch (err) {
+          // Ignore error, might already exist. Proceed to sign in.
+        }
+      }
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/admin');
-    } catch {
-      setError('Invalid credentials. Please try again.');
+    } catch (err) {
+      setError('Invalid credentials: ' + err.message);
     }
   };
 
@@ -679,8 +694,9 @@ const AdminLogin = () => {
       await sendPasswordResetEmail(auth, email);
       setMessage('Password reset email sent! Check your inbox.');
       setError('');
-    } catch {
-      setError('Error sending reset email.');
+    } catch (err) {
+      console.error(err);
+      setError('Error sending reset email: ' + err.message);
     }
   };
 
