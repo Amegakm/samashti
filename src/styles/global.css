@@ -156,3 +156,63 @@ p {
 .secondary-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Cool Brochure Button */
+.brochure-cool-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(255, 215, 0, 0.05);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.brochure-cool-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 215, 0, 0.3),
+    transparent
+  );
+  transition: 0.6s ease-in-out;
+  z-index: -1;
+}
+
+.brochure-cool-btn:hover::before {
+  left: 100%;
+}
+
+.brochure-cool-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.brochure-cool-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.brochure-cool-btn:hover svg {
+  transform: rotate(-10deg) scale(1.2);
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

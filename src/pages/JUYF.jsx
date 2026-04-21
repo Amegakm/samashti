@@ -85,7 +85,7 @@ const JUYF = () => {
                         href={ev.brochure}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="juyf-brochure-btn"
+                        className="brochure-cool-btn"
                       >
                         <FileText size={18} />
                         <span>Rules & Details</span>

@@ -202,7 +202,7 @@
 .programs-list {
   padding: 0 32px 32px;
   border-top: 1px solid var(--border);
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .programs-list h4 {
@@ -320,16 +320,16 @@
   .fest-header h1 {
     font-size: 2.5rem;
   }
-  
+
   .cluster-card {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .cluster-icon {
     margin: 0 auto;
   }
-  
+
   .schedule-row {
     grid-template-columns: 1fr;
     gap: 16px;

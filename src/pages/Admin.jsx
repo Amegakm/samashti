@@ -113,16 +113,21 @@ const HOFManager = () => {
 // ── Gallery ─────────────────────────────────────────────────────────────────
 const GalleryManager = () => {
   const [items, setItems] = useState([]);
-  const [newItem, setNewItem] = useState({ title: '', url: '' });
+  const [newItem, setNewItem] = useState({ description: '', url: '', forum: '' });
+  const [config, setConfig] = useState({ departments: [], forums: [] });
   const [saving, setSaving] = useState(false);
   const { toast, show } = useToast();
 
   useEffect(() => {
-    const unsub = subscribeToGallery(
+    const unsubGallery = subscribeToGallery(
       (data) => setItems(data),
       (err) => show(`Read error: ${err.message}`, 'error')
     );
-    return unsub;
+    const unsubConfig = subscribeToRecruitmentConfig(
+      (data) => setConfig(data),
+      () => {}
+    );
+    return () => { unsubGallery(); unsubConfig(); };
   }, [show]);
 
   const handleAdd = async (e) => {
@@ -130,7 +135,7 @@ const GalleryManager = () => {
     setSaving(true);
     try {
       await addGalleryItem(newItem);
-      setNewItem({ title: '', url: '' });
+      setNewItem({ description: '', url: '', forum: '' });
       show('Photo added! It will appear in the Gallery immediately.');
     } catch (err) {
       show(`Failed to save: ${err.message}`, 'error');
@@ -153,13 +158,14 @@ const GalleryManager = () => {
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
       <form className="admin-form glass" onSubmit={handleAdd}>
         <h3>Add to Gallery</h3>
-        <input type="text" placeholder="Photo Title" value={newItem.title} onChange={e => setNewItem({...newItem, title: e.target.value})} required />
+        <input type="text" placeholder="Forum/Category (e.g. Dancing)" value={newItem.forum} onChange={e => setNewItem({...newItem, forum: e.target.value})} required />
+        <textarea placeholder="Photo Description" value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} required />
         <label className="upload-label">Photo</label>
         <ImageUploader
           folder="gallery"
           onUploaded={(url) => setNewItem(prev => ({...prev, url}))}
         />
-        <button type="submit" className="primary-btn" disabled={saving || !newItem.title || !newItem.url}>
+        <button type="submit" className="primary-btn" disabled={saving || !newItem.forum || !newItem.url}>
           {saving ? 'Saving to Firebase...' : 'Add Photo'}
         </button>
       </form>
@@ -167,8 +173,11 @@ const GalleryManager = () => {
         {items.length === 0 && <p className="list-empty">No photos yet. Add one above.</p>}
         {items.map(i => (
           <div key={i.id} className="admin-list-item glass">
-            {i.url && <img src={i.url} alt={i.title} className="list-thumb" />}
-            <span>{i.title}</span>
+            {i.url && <img src={i.url} alt={i.forum} className="list-thumb" />}
+            <div className="list-info">
+              <strong>{i.forum}</strong>
+              <span className="list-sub">{i.description}</span>
+            </div>
             <button onClick={() => handleDelete(i.id)} className="delete-icon"><Trash2 size={18} /></button>
           </div>
         ))}
