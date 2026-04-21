@@ -77,7 +77,7 @@ const ImageUploader = ({ onUploaded, folder = 'uploads' }) => {
               <X size={16} />
             </button>
           )}
-          {uploading && <p className="uploading-label">Uploading to Firebase...</p>}
+          {uploading && <p className="uploading-label">Uploading...</p>}
         </div>
       ) : (
         <div

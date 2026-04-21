@@ -12,7 +12,8 @@ import {
   subscribeToFestEvents, addFestEvent, deleteFestEvent,
   subscribeToFestInfo, updateFestInfo,
   subscribeToJuyfEvents, addJuyfEvent, deleteJuyfEvent,
-  subscribeToJuyfInfo, updateJuyfInfo
+  subscribeToJuyfInfo, updateJuyfInfo,
+  subscribeToRecruitmentConfig, updateRecruitmentConfig
 } from '../firebase/services';
 import ImageUploader from '../components/ImageUploader';
 import FileUploader from '../components/FileUploader';
@@ -372,6 +373,15 @@ const FestEventsManager = () => {
               hint="JPG, PNG, WEBP, PDF — max 20MB"
               onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })}
             />
+            <div className="manual-link-field">
+              <span>OR Paste Link (e.g. Google Drive)</span>
+              <input
+                type="url"
+                placeholder="https://drive.google.com/..."
+                value={newEvent.brochure}
+                onChange={e => setNewEvent({ ...newEvent, brochure: e.target.value })}
+              />
+            </div>
           </div>
           <button type="submit" className="primary-btn" disabled={saving || !newEvent.name || !newEvent.date}>
             {saving ? 'Saving...' : 'Add Event'}
@@ -513,13 +523,24 @@ const JUYFEventsManager = () => {
           <input type="text" placeholder="Date/Time" value={newEvent.date} onChange={e => setNewEvent({ ...newEvent, date: e.target.value })} required />
           <textarea placeholder="Brief Description" value={newEvent.description} onChange={e => setNewEvent({ ...newEvent, description: e.target.value })} />
           <input type="url" placeholder="Registration Link (optional)" value={newEvent.regLink} onChange={e => setNewEvent({ ...newEvent, regLink: e.target.value })} />
-          <label className="upload-label">Rules Brochure (Image/PDF)</label>
-          <FileUploader 
-            folder="brochures" 
-            accept="image/*,application/pdf" 
-            hint="JPG, PNG, WEBP, PDF — max 20MB"
-            onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })} 
-          />
+          <div className="form-group">
+            <label className="upload-label">Rules Brochure (Image/PDF)</label>
+            <FileUploader 
+              folder="brochures" 
+              accept="image/*,application/pdf" 
+              hint="JPG, PNG, WEBP, PDF — max 20MB"
+              onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })} 
+            />
+            <div className="manual-link-field">
+              <span>OR Paste Link (e.g. Google Drive)</span>
+              <input
+                type="url"
+                placeholder="https://drive.google.com/..."
+                value={newEvent.brochure}
+                onChange={e => setNewEvent({ ...newEvent, brochure: e.target.value })}
+              />
+            </div>
+          </div>
           <button type="submit" className="primary-btn" disabled={saving}>
             {saving ? 'Adding...' : 'Add JUYF Event'}
           </button>
@@ -598,6 +619,120 @@ const RecruitmentManager = () => {
   );
 };
 
+// ── Recruitment Configuration (Dropdown Options) ────────────────────────────
+const RecruitmentConfigManager = () => {
+  const [config, setConfig] = useState({ departments: [], forums: [] });
+  const [newDept, setNewDept] = useState('');
+  const [newForum, setNewForum] = useState('');
+  const [saving, setSaving] = useState(false);
+  const { toast, show } = useToast();
+
+  useEffect(() => {
+    const unsub = subscribeToRecruitmentConfig(
+      (data) => setConfig(data),
+      (err) => show(`Read error: ${err.message}`, 'error')
+    );
+    return unsub;
+  }, [show]);
+
+  const handleAddDept = async (e) => {
+    e.preventDefault();
+    if (!newDept.trim()) return;
+    setSaving(true);
+    try {
+      const updatedDepts = [...config.departments, newDept.trim()];
+      await updateRecruitmentConfig({ ...config, departments: updatedDepts });
+      setNewDept('');
+      show('Department added!');
+    } catch (err) {
+      show(`Failed to save: ${err.message}`, 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAddForum = async (e) => {
+    e.preventDefault();
+    if (!newForum.trim()) return;
+    setSaving(true);
+    try {
+      const updatedForums = [...config.forums, newForum.trim()];
+      await updateRecruitmentConfig({ ...config, forums: updatedForums });
+      setNewForum('');
+      show('Forum added!');
+    } catch (err) {
+      show(`Failed to save: ${err.message}`, 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const removeItem = async (type, index) => {
+    try {
+      const updated = { ...config };
+      updated[type] = config[type].filter((_, i) => i !== index);
+      await updateRecruitmentConfig(updated);
+      show('Item removed.');
+    } catch (err) {
+      show(`Remove failed: ${err.message}`, 'error');
+    }
+  };
+
+  return (
+    <div className="recruitment-config-manager">
+      <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
+      
+      <div className="config-grid">
+        {/* Departments */}
+        <div className="config-section glass">
+          <h3>Manage Departments</h3>
+          <form className="config-add-form" onSubmit={handleAddDept}>
+            <input 
+              type="text" 
+              placeholder="e.g. Computer Science" 
+              value={newDept} 
+              onChange={e => setNewDept(e.target.value)} 
+            />
+            <button type="submit" className="primary-btn" disabled={saving}>Add</button>
+          </form>
+          <div className="config-list">
+            {config.departments.map((d, i) => (
+              <div key={i} className="config-item">
+                <span>{d}</span>
+                <button onClick={() => removeItem('departments', i)} className="delete-icon"><Trash2 size={14} /></button>
+              </div>
+            ))}
+            {config.departments.length === 0 && <p className="list-empty">No departments added.</p>}
+          </div>
+        </div>
+
+        {/* Forums */}
+        <div className="config-section glass">
+          <h3>Manage Forums</h3>
+          <form className="config-add-form" onSubmit={handleAddForum}>
+            <input 
+              type="text" 
+              placeholder="e.g. Photography Forum" 
+              value={newForum} 
+              onChange={e => setNewForum(e.target.value)} 
+            />
+            <button type="submit" className="primary-btn" disabled={saving}>Add</button>
+          </form>
+          <div className="config-list">
+            {config.forums.map((f, i) => (
+              <div key={i} className="config-item">
+                <span>{f}</span>
+                <button onClick={() => removeItem('forums', i)} className="delete-icon"><Trash2 size={14} /></button>
+              </div>
+            ))}
+            {config.forums.length === 0 && <p className="list-empty">No forums added.</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ── Dashboard Shell ─────────────────────────────────────────────────────────
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('HOF');
@@ -615,6 +750,7 @@ const Dashboard = () => {
     { id: 'Fest',    label: 'Fest Events',     icon: <PartyPopper size={18} /> },
     { id: 'JUYF',    label: 'JUYF (Internal)', icon: <CheckCircle size={18} /> },
     { id: 'Apps',    label: 'Recruitment',     icon: <FileText size={18} /> },
+    { id: 'Config',  label: 'Recruitment Setup', icon: <CheckCircle size={18} /> },
   ];
 
   return (
@@ -652,6 +788,7 @@ const Dashboard = () => {
               {activeTab === 'Fest'    && <FestEventsManager />}
               {activeTab === 'JUYF'    && <JUYFEventsManager />}
               {activeTab === 'Apps'    && <RecruitmentManager />}
+              {activeTab === 'Config'  && <RecruitmentConfigManager />}
             </motion.div>
           </AnimatePresence>
         </main>

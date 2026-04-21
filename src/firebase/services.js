@@ -1,14 +1,15 @@
 import { collection, addDoc, deleteDoc, doc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from './config';
 
-// ── Image Upload (ImgBB - Free Hosting) ────────────────────────────────────
-// Get your free API key at: https://api.imgbb.com/
+// ── ImgBB Upload (For Gallery & HOF Images) ───────────────────────────
 const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
-export const uploadImage = (file, onProgress) => {
+export const uploadImage = (file, ...args) => {
+  const onProgress = typeof args[0] === 'function' ? args[0] : args[1];
+  
   return new Promise((resolve, reject) => {
-    if (IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY_HERE') {
-      reject(new Error('Please add your ImgBB API Key in services.js'));
+    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'YOUR_IMGBB_API_KEY_HERE') {
+      reject(new Error('ImgBB API Key missing in .env (needed for Gallery/HOF)'));
       return;
     }
 
@@ -18,7 +19,6 @@ export const uploadImage = (file, onProgress) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`);
 
-    // Track upload progress
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable && onProgress) {
         const pct = Math.round((event.loaded / event.total) * 100);
@@ -29,52 +29,61 @@ export const uploadImage = (file, onProgress) => {
     xhr.onload = () => {
       if (xhr.status === 200) {
         const response = JSON.parse(xhr.responseText);
-        resolve(response.data.url); // Use the direct image URL from ImgBB
+        resolve(response.data.url);
       } else {
-        reject(new Error('ImgBB Upload Failed: ' + xhr.statusText));
+        const err = JSON.parse(xhr.responseText);
+        reject(new Error('ImgBB Upload Failed: ' + (err.error?.message || xhr.statusText)));
       }
     };
 
-    xhr.onerror = () => reject(new Error('Network Error during upload'));
+    xhr.onerror = () => reject(new Error('Network Error during ImgBB upload.'));
     xhr.send(formData);
   });
 };
 
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from './config';
+// ── Cloudinary Upload (For Brochures/PDFs) ────────────────────────────
+const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-// ── File Upload (Firebase Storage for PDFs/Docs) ───────────────────
-export const uploadFileToStorage = (file, folder = 'uploads', onProgress) => {
+export const uploadToCloudinary = (file, onProgress) => {
   return new Promise((resolve, reject) => {
-    if (!file) {
-      reject(new Error('No file provided'));
+    if (!CLOUD_NAME || !UPLOAD_PRESET) {
+      reject(new Error('Cloudinary credentials missing in .env (needed for Brochures)'));
       return;
     }
 
-    const uniqueName = Date.now() + '_' + file.name;
-    const storageRef = ref(storage, `${folder}/${uniqueName}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
 
-    uploadTask.on('state_changed',
-      (snapshot) => {
-        if (onProgress) {
-          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          onProgress(pct);
-        }
-      },
-      (error) => {
-        reject(new Error('Firebase Upload Failed: ' + error.message));
-      },
-      async () => {
-        try {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
-        } catch (err) {
-          reject(new Error('Failed to get URL: ' + err.message));
-        }
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable && onProgress) {
+        const pct = Math.round((event.loaded / event.total) * 100);
+        onProgress(pct);
       }
-    );
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        resolve(response.secure_url);
+      } else {
+        const err = JSON.parse(xhr.responseText);
+        reject(new Error('Cloudinary Upload Failed: ' + (err.error?.message || xhr.statusText)));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('Network Error during Cloudinary upload.'));
+    xhr.send(formData);
   });
+};
+
+export const uploadFileToStorage = (file, ...args) => {
+  const onProgress = typeof args[0] === 'function' ? args[0] : args[1];
+  return uploadToCloudinary(file, onProgress);
 };
 
 // ── Collection references ───────────────────────────────────────────────────
@@ -85,6 +94,7 @@ const galleryRef = collection(db, 'gallery');
 const festRef = collection(db, 'fest_clusters');
 const festEventsRef = collection(db, 'fest_events');
 const juyfEventsRef = collection(db, 'juyf_events');
+const recruitmentConfigRef = doc(db, 'recruitment_config', 'settings');
 
 // ── Hall of Fame ────────────────────────────────────────────────────────────
 export const subscribeToHallOfFame = (onData, onError) => {
@@ -212,3 +222,14 @@ export const subscribeToJuyfInfo = (onData, onError) =>
 
 export const updateJuyfInfo = async (data) =>
   setDoc(juyfInfoDocRef, data, { merge: true });
+
+// ── Recruitment Config (Departments & Forums) ───────────────────────────
+export const subscribeToRecruitmentConfig = (onData, onError) =>
+  onSnapshot(
+    recruitmentConfigRef,
+    (snapshot) => onData(snapshot.exists() ? snapshot.data() : { departments: [], forums: [] }),
+    (err) => onError && onError(err)
+  );
+
+export const updateRecruitmentConfig = async (data) =>
+  setDoc(recruitmentConfigRef, data, { merge: true });

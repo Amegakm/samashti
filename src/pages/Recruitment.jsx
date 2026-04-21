@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle } from 'lucide-react';
-import { submitApplication } from '../firebase/services';
+import { submitApplication, subscribeToRecruitmentConfig } from '../firebase/services';
 import './Recruitment.css';
+import { useEffect } from 'react';
 
 const Recruitment = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,15 @@ const Recruitment = () => {
   });
 
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const [config, setConfig] = useState({ departments: [], forums: [] });
+
+  useEffect(() => {
+    const unsub = subscribeToRecruitmentConfig(
+      (data) => setConfig(data),
+      (err) => console.error(err)
+    );
+    return unsub;
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,14 +59,14 @@ const Recruitment = () => {
   return (
     <div className="recruitment-page container section-padding">
       <div className="recruitment-content">
-        <motion.div 
+        <motion.div
           className="recruitment-info"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
         >
           <h1>Join Samashti</h1>
           <p>Be a part of the official student council. Lead, innovate, and drive change across the campus.</p>
-          
+
           <ul className="perks">
             <li>Develop leadership skills</li>
             <li>Organize massive university fests</li>
@@ -65,7 +75,7 @@ const Recruitment = () => {
           </ul>
         </motion.div>
 
-        <motion.form 
+        <motion.form
           className="recruitment-form glass"
           onSubmit={handleSubmit}
           initial={{ opacity: 0, x: 30 }}
@@ -86,12 +96,22 @@ const Recruitment = () => {
             </div>
           </div>
           <div className="form-group">
-            <label>Department / Major</label>
-            <input type="text" name="department" value={formData.department} onChange={handleChange} required placeholder="Computer Science" />
+            <label>Department</label>
+            <select name="department" value={formData.department} onChange={handleChange} required>
+              <option value="">Select Department</option>
+              {config.departments.map((d, i) => (
+                <option key={i} value={d}>{d}</option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
-            <label>Forum / Interest Group</label>
-            <input type="text" name="forum" value={formData.forum} onChange={handleChange} required placeholder="e.g. Photography, Coding, etc." />
+            <label>Forum</label>
+            <select name="forum" value={formData.forum} onChange={handleChange} required>
+              <option value="">Select Forum</option>
+              {config.forums.map((f, i) => (
+                <option key={i} value={f}>{f}</option>
+              ))}
+            </select>
           </div>
           <div className="form-group">
             <label>Why do you want to join Samashti?</label>
@@ -101,7 +121,7 @@ const Recruitment = () => {
           <button type="submit" className="submit-btn" disabled={status === 'submitting'}>
             {status === 'submitting' ? 'Submitting...' : <><Send size={18} /> Submit Application</>}
           </button>
-          
+
           {status === 'error' && <p className="error-msg">Something went wrong. Please try again.</p>}
         </motion.form>
       </div>

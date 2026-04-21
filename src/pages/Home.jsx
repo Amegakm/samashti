@@ -6,10 +6,10 @@ import './Home.css';
 
 const Home = () => {
   const features = [
-    { title: 'Samyoga', desc: 'The Cultural Fest - Music, Theatre & Fine Arts.', icon: '🎭', path: '/fest#samyoga' },
-    { title: 'Pulse', desc: 'The Dance Fest - Celebrating every rhythm.', icon: '💃', path: '/fest#pulse' },
-    { title: 'Sankalpa', desc: 'The Tech Fest - Digital innovation & gaming.', icon: '💻', path: '/fest#sankalpa' },
-    { title: 'Samanvaya', desc: 'Commerce & Business leadership.', icon: '💼', path: '/fest#samanvaya' },
+    { title: 'Samyoga', desc: 'The Cultural Fest - Music, Theatre & Fine Arts.', icon: '🎭' },
+    { title: 'Pulse', desc: 'The Dance Fest - Celebrating every rhythm.', icon: '💃' },
+    { title: 'Sankalpa', desc: 'The Tech Fest - Digital innovation & gaming.', icon: '💻' },
+    { title: 'Samanvaya', desc: 'Commerce & Business leadership.', icon: '💼' },
   ];
 
   return (
@@ -84,7 +84,7 @@ const Home = () => {
           <div className="brief-content glass">
             <h2>Our Core Mission</h2>
             <p>
-              Samashti is the vibrant cultural forum of Jain University, bringing together creativity and talent under one platform. 
+              Samashti is the vibrant cultural forum of Jain University, bringing together creativity and talent under one platform.
               We celebrate diverse art forms and provide students with opportunities to express themselves and showcase their skills.
             </p>
             <Link to="/about" className="text-btn">Read our story {'>'}</Link>
