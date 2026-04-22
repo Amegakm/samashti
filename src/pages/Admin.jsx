@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Image as ImageIcon, Bell, FileText, LogOut, Trash2, CheckCircle, Eye, EyeOff, PartyPopper, AlertCircle, ExternalLink } from 'lucide-react';
+import { Users, Image as ImageIcon, Bell, FileText, LogOut, Trash2, CheckCircle, Eye, EyeOff, PartyPopper, AlertCircle, ExternalLink, MessageSquare } from 'lucide-react';
 import {
   subscribeToHallOfFame, addHallOfFameEntry, deleteHallOfFameEntry,
   subscribeToGallery, addGalleryItem, deleteGalleryItem,
@@ -13,7 +13,8 @@ import {
   subscribeToFestInfo, updateFestInfo,
   subscribeToJuyfEvents, addJuyfEvent, deleteJuyfEvent,
   subscribeToJuyfInfo, updateJuyfInfo,
-  subscribeToRecruitmentConfig, updateRecruitmentConfig
+  subscribeToRecruitmentConfig, updateRecruitmentConfig,
+  subscribeToFeedback, deleteFeedback
 } from '../firebase/services';
 import ImageUploader from '../components/ImageUploader';
 import FileUploader from '../components/FileUploader';
@@ -158,7 +159,16 @@ const GalleryManager = () => {
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
       <form className="admin-form glass" onSubmit={handleAdd}>
         <h3>Add to Gallery</h3>
-        <input type="text" placeholder="Forum/Category (e.g. Dancing)" value={newItem.forum} onChange={e => setNewItem({...newItem, forum: e.target.value})} required />
+        <select
+          value={newItem.forum}
+          onChange={e => setNewItem({...newItem, forum: e.target.value})}
+          required
+        >
+          <option value="" disabled>Select Forum / Category</option>
+          {config.forums.map((f, i) => (
+            <option key={i} value={f}>{f}</option>
+          ))}
+        </select>
         <textarea placeholder="Photo Description" value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} required />
         <label className="upload-label">Photo</label>
         <ImageUploader
@@ -742,6 +752,53 @@ const RecruitmentConfigManager = () => {
   );
 };
 
+// ── Feedback Manager ────────────────────────────────────────────────────────
+const FeedbackManager = () => {
+  const [feedbacks, setFeedbacks] = useState([]);
+  const { toast, show } = useToast();
+
+  useEffect(() => {
+    const unsub = subscribeToFeedback(
+      (data) => setFeedbacks(data.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt))),
+      (err) => show(`Read error: ${err.message}`, 'error')
+    );
+    return unsub;
+  }, [show]);
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteFeedback(id);
+      show('Feedback deleted.');
+    } catch (err) {
+      show(`Delete failed: ${err.message}`, 'error');
+    }
+  };
+
+  return (
+    <div className="manager-section full-width-section">
+      <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
+      <div className="admin-list full-width">
+        {feedbacks.length === 0 && <p className="list-empty">No feedback received yet.</p>}
+        {feedbacks.map(f => (
+          <div key={f.id} className="app-card glass feedback-card">
+            <div className="app-header">
+              <div className="app-header-left">
+                <strong>{f.name}</strong>
+                <span className="app-date">{f.submittedAt ? new Date(f.submittedAt).toLocaleString() : 'No date'}</span>
+              </div>
+              <button onClick={() => handleDelete(f.id)} className="delete-btn"><Trash2 size={18} /></button>
+            </div>
+            <p><strong>Email:</strong> {f.email}</p>
+            <div className="feedback-message-box">
+              <p className="app-reason">"{f.message}"</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // ── Dashboard Shell ─────────────────────────────────────────────────────────
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('HOF');
@@ -760,6 +817,7 @@ const Dashboard = () => {
     { id: 'JUYF',    label: 'JUYF (Internal)', icon: <CheckCircle size={18} /> },
     { id: 'Apps',    label: 'Recruitment',     icon: <FileText size={18} /> },
     { id: 'Config',  label: 'Recruitment Setup', icon: <CheckCircle size={18} /> },
+    { id: 'Feedback', label: 'User Feedback',   icon: <MessageSquare size={18} /> },
   ];
 
   return (
@@ -798,6 +856,7 @@ const Dashboard = () => {
               {activeTab === 'JUYF'    && <JUYFEventsManager />}
               {activeTab === 'Apps'    && <RecruitmentManager />}
               {activeTab === 'Config'  && <RecruitmentConfigManager />}
+              {activeTab === 'Feedback' && <FeedbackManager />}
             </motion.div>
           </AnimatePresence>
         </main>

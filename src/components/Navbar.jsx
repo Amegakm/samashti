@@ -110,6 +110,7 @@ const Navbar = () => {
         </div>
         <div className="sidebar-links">
           <Link to="/about" className="sidebar-link">About Us</Link>
+          <Link to="/feedback" className="sidebar-link">Feedback</Link>
           <Link to="/admin" className="sidebar-link">Admin</Link>
           <Link to="/privacy" className="sidebar-link">Privacy Policy</Link>
           <Link to="/terms" className="sidebar-link">Terms and Conditions</Link>

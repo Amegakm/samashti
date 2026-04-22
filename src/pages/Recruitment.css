@@ -64,7 +64,9 @@ label {
   letter-spacing: 1px;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   padding: 14px 18px;
@@ -76,7 +78,9 @@ input, textarea, select {
   appearance: none;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: var(--accent);
   background: rgba(255, 255, 255, 0.08);
@@ -135,7 +139,7 @@ textarea {
   justify-content: center;
 }
 
-.success-view > div {
+.success-view>div {
   display: flex;
   flex-direction: column;
   align-items: center;

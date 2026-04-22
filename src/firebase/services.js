@@ -95,6 +95,7 @@ const festRef = collection(db, 'fest_clusters');
 const festEventsRef = collection(db, 'fest_events');
 const juyfEventsRef = collection(db, 'juyf_events');
 const recruitmentConfigRef = doc(db, 'recruitment_config', 'settings');
+const feedbackRef = collection(db, 'feedback');
 
 // ── Hall of Fame ────────────────────────────────────────────────────────────
 export const subscribeToHallOfFame = (onData, onError) => {
@@ -233,3 +234,17 @@ export const subscribeToRecruitmentConfig = (onData, onError) =>
 
 export const updateRecruitmentConfig = async (data) =>
   setDoc(recruitmentConfigRef, data, { merge: true });
+
+// ── Feedback ─────────────────────────────────────────────────────────────
+export const submitFeedback = async (data) =>
+  addDoc(feedbackRef, { ...data, submittedAt: new Date().toISOString() });
+
+export const subscribeToFeedback = (onData, onError) =>
+  onSnapshot(
+    feedbackRef,
+    (snapshot) => onData(snapshot.docs.map(d => ({ id: d.id, ...d.data() }))),
+    (err) => onError && onError(err)
+  );
+
+export const deleteFeedback = async (id) =>
+  deleteDoc(doc(db, 'feedback', id));
