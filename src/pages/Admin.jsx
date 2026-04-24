@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Image as ImageIcon, Bell, FileText, LogOut, Trash2, CheckCircle, Eye, EyeOff, PartyPopper, AlertCircle, ExternalLink, MessageSquare } from 'lucide-react';
+import { Users, Image as ImageIcon, Bell, FileText, LogOut, Trash2, CheckCircle, Eye, EyeOff, PartyPopper, AlertCircle, ExternalLink, MessageSquare, Trophy } from 'lucide-react';
 import {
   subscribeToHallOfFame, addHallOfFameEntry, deleteHallOfFameEntry,
   subscribeToGallery, addGalleryItem, deleteGalleryItem,
@@ -14,7 +14,8 @@ import {
   subscribeToJuyfEvents, addJuyfEvent, deleteJuyfEvent,
   subscribeToJuyfInfo, updateJuyfInfo,
   subscribeToRecruitmentConfig, updateRecruitmentConfig,
-  subscribeToFeedback, deleteFeedback
+  subscribeToFeedback, deleteFeedback,
+  subscribeToResults, addResult, deleteResult
 } from '../firebase/services';
 import ImageUploader from '../components/ImageUploader';
 import FileUploader from '../components/FileUploader';
@@ -85,13 +86,13 @@ const HOFManager = () => {
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
       <form className="admin-form glass" onSubmit={handleAdd}>
         <h3>Add to Hall of Fame</h3>
-        <input type="text" placeholder="Full Name" value={newEntry.name} onChange={e => setNewEntry({...newEntry, name: e.target.value})} required />
-        <input type="text" placeholder="Achievement / Title" value={newEntry.achievement} onChange={e => setNewEntry({...newEntry, achievement: e.target.value})} required />
-        <input type="text" placeholder="Year (e.g. 2025)" value={newEntry.year} onChange={e => setNewEntry({...newEntry, year: e.target.value})} />
+        <input type="text" placeholder="Full Name" value={newEntry.name} onChange={e => setNewEntry({ ...newEntry, name: e.target.value })} required />
+        <input type="text" placeholder="Achievement / Title" value={newEntry.achievement} onChange={e => setNewEntry({ ...newEntry, achievement: e.target.value })} required />
+        <input type="text" placeholder="Year (e.g. 2025)" value={newEntry.year} onChange={e => setNewEntry({ ...newEntry, year: e.target.value })} />
         <label className="upload-label">Photo</label>
         <ImageUploader
           folder="hall_of_fame"
-          onUploaded={(url) => setNewEntry(prev => ({...prev, image: url}))}
+          onUploaded={(url) => setNewEntry(prev => ({ ...prev, image: url }))}
         />
         <button type="submit" className="primary-btn" disabled={saving || !newEntry.name || !newEntry.achievement}>
           {saving ? 'Saving to Firebase...' : 'Add Entry'}
@@ -126,7 +127,7 @@ const GalleryManager = () => {
     );
     const unsubConfig = subscribeToRecruitmentConfig(
       (data) => setConfig(data),
-      () => {}
+      () => { }
     );
     return () => { unsubGallery(); unsubConfig(); };
   }, [show]);
@@ -161,7 +162,7 @@ const GalleryManager = () => {
         <h3>Add to Gallery</h3>
         <select
           value={newItem.forum}
-          onChange={e => setNewItem({...newItem, forum: e.target.value})}
+          onChange={e => setNewItem({ ...newItem, forum: e.target.value })}
           required
         >
           <option value="" disabled>Select Forum / Category</option>
@@ -169,11 +170,11 @@ const GalleryManager = () => {
             <option key={i} value={f}>{f}</option>
           ))}
         </select>
-        <textarea placeholder="Photo Description" value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} required />
+        <textarea placeholder="Photo Description" value={newItem.description} onChange={e => setNewItem({ ...newItem, description: e.target.value })} required />
         <label className="upload-label">Photo</label>
         <ImageUploader
           folder="gallery"
-          onUploaded={(url) => setNewItem(prev => ({...prev, url}))}
+          onUploaded={(url) => setNewItem(prev => ({ ...prev, url }))}
         />
         <button type="submit" className="primary-btn" disabled={saving || !newItem.forum || !newItem.url}>
           {saving ? 'Saving to Firebase...' : 'Add Photo'}
@@ -239,13 +240,13 @@ const AnnouncementManager = () => {
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
       <form className="admin-form glass" onSubmit={handleAdd}>
         <h3>Post Live Update</h3>
-        <input type="text" placeholder="Title (e.g. Result Announced!)" value={newMsg.title} onChange={e => setNewMsg({...newMsg, title: e.target.value})} required />
-        <textarea placeholder="Announcement body..." value={newMsg.content} onChange={e => setNewMsg({...newMsg, content: e.target.value})} required />
-        <select value={newMsg.type} onChange={e => setNewMsg({...newMsg, type: e.target.value})}>
+        <input type="text" placeholder="Title (e.g. Result Announced!)" value={newMsg.title} onChange={e => setNewMsg({ ...newMsg, title: e.target.value })} required />
+        <textarea placeholder="Announcement body..." value={newMsg.content} onChange={e => setNewMsg({ ...newMsg, content: e.target.value })} required />
+        <select value={newMsg.type} onChange={e => setNewMsg({ ...newMsg, type: e.target.value })}>
           <option value="General">General</option>
           <option value="Fest">Fest</option>
         </select>
-        <input type="url" placeholder="Link URL (optional)" value={newMsg.link} onChange={e => setNewMsg({...newMsg, link: e.target.value})} />
+        <input type="url" placeholder="Link URL (optional)" value={newMsg.link} onChange={e => setNewMsg({ ...newMsg, link: e.target.value })} />
         <button type="submit" className="primary-btn" disabled={saving}>
           {saving ? 'Publishing to Firebase...' : 'Publish'}
         </button>
@@ -259,6 +260,96 @@ const AnnouncementManager = () => {
               <span className="list-sub">{m.content}</span>
             </div>
             <button onClick={() => handleDelete(m.id)} className="delete-icon"><Trash2 size={18} /></button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── Results ─────────────────────────────────────────────────────────────────
+const ResultsManager = () => {
+  const [results, setResults] = useState([]);
+  const [newResult, setNewResult] = useState({ name: '', title: '', year: '', url: '' });
+  const [saving, setSaving] = useState(false);
+  const { toast, show } = useToast();
+
+  useEffect(() => {
+    const unsub = subscribeToResults(
+      (data) => setResults(data),
+      (err) => show(`Read error: ${err.message}`, 'error')
+    );
+    return unsub;
+  }, [show]);
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await addResult(newResult);
+      setNewResult({ name: '', title: '', year: '', url: '' });
+      show('Result published! Visible on the Results page now.');
+    } catch (err) {
+      show(`Failed to publish: ${err.message}`, 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteResult(id);
+      show('Result deleted.');
+    } catch (err) {
+      show(`Delete failed: ${err.message}`, 'error');
+    }
+  };
+
+  return (
+    <div className="manager-section">
+      <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
+      <form className="admin-form glass" onSubmit={handleAdd}>
+        <h3>Post a Result</h3>
+        <input
+          type="text"
+          placeholder="Person / Event Name (e.g. Aryan Sharma)"
+          value={newResult.name}
+          onChange={e => setNewResult({ ...newResult, name: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Title / Achievement (e.g. 1st Place — Classical Dance)"
+          value={newResult.title}
+          onChange={e => setNewResult({ ...newResult, title: e.target.value })}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Year (e.g. 2026)"
+          value={newResult.year}
+          onChange={e => setNewResult({ ...newResult, year: e.target.value })}
+          required
+        />
+        <label className="upload-label">Result Photo</label>
+        <ImageUploader
+          folder="results"
+          onUploaded={(url) => setNewResult({ ...newResult, url })}
+        />
+        <button type="submit" className="primary-btn" disabled={saving || !newResult.name || !newResult.title || !newResult.year || !newResult.url}>
+          {saving ? 'Publishing...' : 'Publish Result'}
+        </button>
+      </form>
+      <div className="admin-list">
+        {results.length === 0 && <p className="list-empty">No results published yet.</p>}
+        {results.map(r => (
+          <div key={r.id} className="admin-list-item glass">
+            {r.url && <img src={r.url} alt={r.name} className="list-thumb" />}
+            <div className="list-info">
+              <strong>{r.name}</strong>
+              <span className="list-sub">{r.title} &mdash; {r.year}</span>
+            </div>
+            <button onClick={() => handleDelete(r.id)} className="delete-icon"><Trash2 size={18} /></button>
           </div>
         ))}
       </div>
@@ -282,7 +373,7 @@ const FestEventsManager = () => {
     );
     const unsubInfo = subscribeToFestInfo(
       (data) => setFestInfo({ name: data.name || '', dates: data.dates || '' }),
-      () => {}
+      () => { }
     );
     return () => { unsubEvents(); unsubInfo(); };
   }, [show]);
@@ -470,7 +561,7 @@ const JUYFEventsManager = () => {
     );
     const unsubInfo = subscribeToJuyfInfo(
       (data) => setJuyfInfo({ name: data.name || '', dates: data.dates || '' }),
-      () => {}
+      () => { }
     );
     return () => { unsubEvents(); unsubInfo(); };
   }, [show]);
@@ -544,11 +635,11 @@ const JUYFEventsManager = () => {
           <input type="url" placeholder="Registration Link (optional)" value={newEvent.regLink} onChange={e => setNewEvent({ ...newEvent, regLink: e.target.value })} />
           <div className="form-group">
             <label className="upload-label">Rules Brochure (Image/PDF)</label>
-            <FileUploader 
-              folder="brochures" 
-              accept="image/*,application/pdf" 
+            <FileUploader
+              folder="brochures"
+              accept="image/*,application/pdf"
               hint="JPG, PNG, WEBP, PDF — max 20MB"
-              onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })} 
+              onUploaded={(url) => setNewEvent({ ...newEvent, brochure: url })}
             />
             <div className="manual-link-field">
               <span>OR Paste Link (e.g. Google Drive)</span>
@@ -700,17 +791,17 @@ const RecruitmentConfigManager = () => {
   return (
     <div className="recruitment-config-manager">
       <AnimatePresence>{toast && <Toast {...toast} />}</AnimatePresence>
-      
+
       <div className="config-grid">
         {/* Departments */}
         <div className="config-section glass">
           <h3>Manage Departments</h3>
           <form className="config-add-form" onSubmit={handleAddDept}>
-            <input 
-              type="text" 
-              placeholder="e.g. Computer Science" 
-              value={newDept} 
-              onChange={e => setNewDept(e.target.value)} 
+            <input
+              type="text"
+              placeholder="e.g. Computer Science"
+              value={newDept}
+              onChange={e => setNewDept(e.target.value)}
             />
             <button type="submit" className="primary-btn" disabled={saving}>Add</button>
           </form>
@@ -729,11 +820,11 @@ const RecruitmentConfigManager = () => {
         <div className="config-section glass">
           <h3>Manage Forums</h3>
           <form className="config-add-form" onSubmit={handleAddForum}>
-            <input 
-              type="text" 
-              placeholder="e.g. Photography Forum" 
-              value={newForum} 
-              onChange={e => setNewForum(e.target.value)} 
+            <input
+              type="text"
+              placeholder="e.g. Photography Forum"
+              value={newForum}
+              onChange={e => setNewForum(e.target.value)}
             />
             <button type="submit" className="primary-btn" disabled={saving}>Add</button>
           </form>
@@ -810,14 +901,15 @@ const Dashboard = () => {
   };
 
   const tabs = [
-    { id: 'HOF',     label: 'Hall of Fame',   icon: <Users size={18} /> },
-    { id: 'Gallery', label: 'Gallery',         icon: <ImageIcon size={18} /> },
-    { id: 'Live',    label: 'Announcements',   icon: <Bell size={18} /> },
-    { id: 'Fest',    label: 'Fest Events',     icon: <PartyPopper size={18} /> },
-    { id: 'JUYF',    label: 'JUYF (Internal)', icon: <CheckCircle size={18} /> },
-    { id: 'Apps',    label: 'Recruitment',     icon: <FileText size={18} /> },
-    { id: 'Config',  label: 'Recruitment Setup', icon: <CheckCircle size={18} /> },
-    { id: 'Feedback', label: 'User Feedback',   icon: <MessageSquare size={18} /> },
+    { id: 'HOF', label: 'Hall of Fame', icon: <Users size={18} /> },
+    { id: 'Gallery', label: 'Gallery', icon: <ImageIcon size={18} /> },
+    { id: 'Live', label: 'Announcements', icon: <Bell size={18} /> },
+    { id: 'Fest', label: 'Fest Events', icon: <PartyPopper size={18} /> },
+    { id: 'Results', label: 'Results', icon: <Trophy size={18} /> },
+    { id: 'JUYF', label: 'JUYF (Internal)', icon: <CheckCircle size={18} /> },
+    { id: 'Apps', label: 'Recruitment', icon: <FileText size={18} /> },
+    { id: 'Config', label: 'Recruitment Setup', icon: <CheckCircle size={18} /> },
+    { id: 'Feedback', label: 'User Feedback', icon: <MessageSquare size={18} /> },
   ];
 
   return (
@@ -849,13 +941,14 @@ const Dashboard = () => {
               exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.2 }}
             >
-              {activeTab === 'HOF'     && <HOFManager />}
+              {activeTab === 'HOF' && <HOFManager />}
               {activeTab === 'Gallery' && <GalleryManager />}
-              {activeTab === 'Live'    && <AnnouncementManager />}
-              {activeTab === 'Fest'    && <FestEventsManager />}
-              {activeTab === 'JUYF'    && <JUYFEventsManager />}
-              {activeTab === 'Apps'    && <RecruitmentManager />}
-              {activeTab === 'Config'  && <RecruitmentConfigManager />}
+              {activeTab === 'Live' && <AnnouncementManager />}
+              {activeTab === 'Fest' && <FestEventsManager />}
+              {activeTab === 'Results' && <ResultsManager />}
+              {activeTab === 'JUYF' && <JUYFEventsManager />}
+              {activeTab === 'Apps' && <RecruitmentManager />}
+              {activeTab === 'Config' && <RecruitmentConfigManager />}
               {activeTab === 'Feedback' && <FeedbackManager />}
             </motion.div>
           </AnimatePresence>
@@ -909,7 +1002,7 @@ const AdminLogin = () => {
     <div className="admin-login container section-padding">
       <motion.form className="login-form glass" onSubmit={handleLogin} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h2>Admin Portal</h2>
-        {error   && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
         {message && <p className="success-msg">{message}</p>}
         <div className="form-group">
           <label>Email</label>

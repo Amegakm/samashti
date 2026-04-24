@@ -14,6 +14,7 @@ import JUYF from './pages/JUYF';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Feedback from './pages/Feedback';
+import Results from './pages/Results';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/feedback" element={<Feedback />} />
+              <Route path="/results" element={<Results />} />
             </Routes>
           </main>
           <Footer />

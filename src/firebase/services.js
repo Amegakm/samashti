@@ -96,6 +96,7 @@ const festEventsRef = collection(db, 'fest_events');
 const juyfEventsRef = collection(db, 'juyf_events');
 const recruitmentConfigRef = doc(db, 'recruitment_config', 'settings');
 const feedbackRef = collection(db, 'feedback');
+const resultsRef = collection(db, 'results');
 
 // ── Hall of Fame ────────────────────────────────────────────────────────────
 export const subscribeToHallOfFame = (onData, onError) => {
@@ -248,3 +249,17 @@ export const subscribeToFeedback = (onData, onError) =>
 
 export const deleteFeedback = async (id) =>
   deleteDoc(doc(db, 'feedback', id));
+
+// ── Results ─────────────────────────────────────────────────────────────
+export const subscribeToResults = (onData, onError) =>
+  onSnapshot(
+    resultsRef,
+    (snapshot) => onData(snapshot.docs.map(d => ({ id: d.id, ...d.data() }))),
+    (err) => onError && onError(err)
+  );
+
+export const addResult = async (result) =>
+  addDoc(resultsRef, { ...result, createdAt: new Date().toISOString() });
+
+export const deleteResult = async (id) =>
+  deleteDoc(doc(db, 'results', id));

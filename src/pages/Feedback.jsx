@@ -12,6 +12,14 @@ const Feedback = () => {
 
   const handleFeedback = async (e) => {
     e.preventDefault();
+    
+    // Basic Name Validation
+    const nameRegex = /^[A-Za-z\s]{3,50}$/;
+    if (!nameRegex.test(form.name.trim())) {
+      setError('Please enter a valid name (at least 3 characters, letters only).');
+      return;
+    }
+
     setSubmitting(true);
     setError('');
     try {
@@ -86,6 +94,10 @@ const Feedback = () => {
                       value={form.name}
                       onChange={e => setForm({ ...form, name: e.target.value })}
                       required
+                      minLength={3}
+                      maxLength={50}
+                      pattern="^[A-Za-z\s]+$"
+                      title="Name should contain only letters and spaces, minimum 3 characters."
                     />
                   </div>
                   <div className="feedback-field">

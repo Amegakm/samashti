@@ -121,7 +121,7 @@
   .juyf-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .juyf-header h1 {
     font-size: 2.2rem;
   }
@@ -131,7 +131,7 @@
   .juyf-card {
     padding: 24px;
   }
-  
+
   .juyf-header h1 {
     font-size: 1.8rem;
   }

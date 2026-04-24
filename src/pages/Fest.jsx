@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FileText } from 'lucide-react';
+import { FileText, Trophy } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { subscribeToFestEvents, subscribeToFestInfo } from '../firebase/services';
 import './Fest.css';
 
@@ -11,11 +12,11 @@ const Fest = () => {
   useEffect(() => {
     const unsubEvents = subscribeToFestEvents(
       (data) => setEvents(data),
-      () => {}
+      () => { }
     );
     const unsubInfo = subscribeToFestInfo(
       (data) => setFestInfo(data),
-      () => {}
+      () => { }
     );
     return () => {
       unsubEvents();
@@ -30,11 +31,16 @@ const Fest = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        {festInfo.name && <h1>{festInfo.name}</h1>}
-        {festInfo.dates && <p className="fest-dates">{festInfo.dates}</p>}
-        {(festInfo.name || festInfo.dates) && (
-          <p>Explore the events and download the brochures below.</p>
-        )}
+        <div className="fest-header-content">
+          {festInfo.name && <h1>{festInfo.name}</h1>}
+          {festInfo.dates && <p className="fest-dates">{festInfo.dates}</p>}
+          {(festInfo.name || festInfo.dates) && (
+            <p>Explore the events and download the brochures below.</p>
+          )}
+          <Link to="/results" className="brochure-cool-btn global-result-btn">
+            <Trophy size={18} /> View Results
+          </Link>
+        </div>
       </motion.div>
 
       <motion.div
@@ -52,8 +58,8 @@ const Fest = () => {
                 <tr>
                   <th>#</th>
                   <th>Event Name</th>
-                  <th>Date</th>
-                  <th>Brochure</th>
+                  <th className="th-date">Date</th>
+                  <th className="th-brochure">Brochure</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,7 +79,7 @@ const Fest = () => {
                           href={ev.brochure}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="brochure-link"
+                          className="brochure-cool-btn table-btn"
                         >
                           <FileText size={16} />
                           View Brochure
