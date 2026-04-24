@@ -160,6 +160,14 @@ textarea {
   font-weight: 600;
 }
 
+.field-error {
+  color: #ff4444;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
+
 @media (max-width: 992px) {
   .recruitment-content {
     grid-template-columns: 1fr;

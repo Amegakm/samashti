@@ -17,6 +17,7 @@ const Recruitment = () => {
 
   const [status, setStatus] = useState('idle'); // idle, submitting, success, error
   const [config, setConfig] = useState({ departments: [], forums: [] });
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     const unsub = subscribeToRecruitmentConfig(
@@ -26,13 +27,40 @@ const Recruitment = () => {
     return unsub;
   }, []);
 
+  const validateForm = () => {
+    let isValid = true;
+    let newErrors = {};
+
+    if (!/^[A-Za-z\s]+$/.test(formData.name)) {
+      newErrors.name = 'Name can only contain alphabets';
+      isValid = false;
+    }
+
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    if (!/^\d+$/.test(formData.phone)) {
+      newErrors.phone = 'Phone number can only contain numbers';
+      isValid = false;
+    }
+
+    setFormErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) return;
+
     setStatus('submitting');
     try {
       await submitApplication(formData);
       setStatus('success');
       setFormData({ name: '', email: '', phone: '', department: '', forum: '', reason: '' });
+      setFormErrors({});
     } catch (e) {
       console.error(e);
       setStatus('error');
@@ -84,15 +112,18 @@ const Recruitment = () => {
           <div className="form-group">
             <label>Full Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" />
+            {formErrors.name && <span className="field-error">{formErrors.name}</span>}
           </div>
           <div className="form-row">
             <div className="form-group">
               <label>Email Address</label>
               <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" />
+              {formErrors.email && <span className="field-error">{formErrors.email}</span>}
             </div>
             <div className="form-group">
               <label>Phone Number</label>
-              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="+91 00000 00000" />
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required placeholder="9876543210" />
+              {formErrors.phone && <span className="field-error">{formErrors.phone}</span>}
             </div>
           </div>
           <div className="form-group">
