@@ -111,7 +111,7 @@ git status
 git add .
 
 # Commit your changes
-git commit -m "Organize folder structure into frontend and backend directories"
+git commit -m "      "
 
 # Push to your GitHub repository
 git push origin main
