@@ -1,6 +1,26 @@
 # Samashti Portal 🌟
 
-Samashti is the central governing student body of **JAIN (Deemed-to-be University)**. This web portal serves as a unified digital platform for our student community, providing real-time updates, event registrations, and management dashboards.
+Samashti is the central governing student body of **JAIN (Deemed-to-be University)**. This portal is organized into a clean folder structure separating the frontend and backend files to make it user-friendly and easy to manage.
+
+---
+
+## 📂 Repository Directory Structure
+
+```text
+samashti/
+├── README.md               # This file
+├── frontend/               # React Vite Frontend App
+│   ├── src/                # Components, Pages & CSS
+│   ├── public/             # Static Assets
+│   ├── package.json        # Frontend Dependencies
+│   └── .env                # App Environment Config
+└── backend/                # Firebase Rules & Scripts
+    ├── firestore.rules     # Database Security Rules
+    ├── storage.rules       # Cloud Storage Rules
+    ├── cors.json           # Storage CORS configurations
+    ├── createAdmin.mjs     # Admin User Seed Script
+    └── package.json        # Backend Dependencies
+```
 
 ---
 
@@ -24,20 +44,21 @@ Samashti is the central governing student body of **JAIN (Deemed-to-be Universit
 
 ---
 
-## 🚀 Getting Started & Git Commands
+## 🚀 Getting Started
 
-### 1. Clone & Setup
+### 1. Frontend Setup (React Application)
+
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd samashti-main
+# Go to the frontend folder
+cd frontend
 
 # Install dependencies
 npm install
+
+# Create/Configure your environment variables in frontend/.env
 ```
 
-### 2. Configure Environment Variables
-Create a `.env` file in the root directory:
+Define the following environment configurations in `frontend/.env`:
 ```ini
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -51,26 +72,47 @@ VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
 VITE_IMGBB_API_KEY=your_imgbb_api_key
 ```
 
-### 3. Run the App
+To run the development server locally:
 ```bash
-# Start local development server
 npm run dev
+```
 
-# Build for production
+To build for production:
+```bash
 npm run build
 ```
 
-### 4. Basic Git Commands
+---
+
+### 2. Backend Setup & Admin Seeding (Firebase & Admin Scripts)
+
 ```bash
-# Check changes
+# Go to the backend folder
+cd backend
+
+# Install dependencies
+npm install
+
+# Run the script to seed your admin credentials
+npm run create-admin
+```
+
+---
+
+## 💻 Git Commands
+
+When working with this repository, use the following standard commands from the root directory:
+
+```bash
+# Check status of changed files
 git status
 
-# Stage your edits
+# Stage your changes
 git add .
 
 # Commit your changes
-git commit -m "Update project features"
+git commit -m "Organize folder structure into frontend and backend directories"
 
-# Push to Github
+# Push to your GitHub repository
 git push origin main
 ```

@@ -2,7 +2,11 @@ import fs from 'fs';
 import { initializeApp } from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-const env = fs.readFileSync('.env', 'utf-8');
+let envPath = '.env';
+if (!fs.existsSync(envPath) && fs.existsSync('../frontend/.env')) {
+  envPath = '../frontend/.env';
+}
+const env = fs.readFileSync(envPath, 'utf-8');
 const config = {};
 env.split('\n').forEach(line => {
   const match = line.match(/^([^=]+)=(.*)$/);

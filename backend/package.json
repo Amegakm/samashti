@@ -1,0 +1,12 @@
+{
+  "name": "samashti-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Backend scripts and configurations for Samashti",
+  "scripts": {
+    "create-admin": "node createAdmin.mjs"
+  },
+  "dependencies": {
+    "firebase": "^10.0.0"
+  }
+}
